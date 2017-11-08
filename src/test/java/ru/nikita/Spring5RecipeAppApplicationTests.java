@@ -1,4 +1,4 @@
-package guru.springframework;
+package ru.nikita;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
