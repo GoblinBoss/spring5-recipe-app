@@ -1,6 +1,6 @@
 package ru.nikita.bootstrap;
 
-import guru.springframework.domain.*;
+import lombok.extern.slf4j.Slf4j;
 import ru.nikita.domain.*;
 import ru.nikita.repositories.CategoryRepository;
 import ru.nikita.repositories.RecipeRepository;
@@ -17,6 +17,7 @@ import java.util.Optional;
 /**
  * Created by jt on 6/13/17.
  */
+@Slf4j
 @Component
 public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
@@ -33,6 +34,7 @@ public class RecipeBootstrap implements ApplicationListener<ContextRefreshedEven
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("Loading Bootstrap data");
     }
 
     private List<Recipe> getRecipes() {
