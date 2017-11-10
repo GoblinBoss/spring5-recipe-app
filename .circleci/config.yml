@@ -1,7 +1,13 @@
 version: 2
 jobs:
   build:
-    filters:
-      branches:
-        only: nikita
+      mashine: true
+      filters:
+        branches:
+          only: nikita
+  test:
+      mashine: true
+      filters:
+        branches:
+          only: nikita
 
