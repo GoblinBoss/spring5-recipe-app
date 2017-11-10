@@ -1,24 +1,4 @@
 version: 2
-jobs:
-  build:
-      mashine: true
-      filters:
-        branches:
-          only: nikita
-  test:
-      mashine: true
-      filters:
-        branches:
-          only: nikita
-
-workflows:
-  version: 2
-  build_and_test:
-    jobs:
-      - build
-      - test:
-          requires:
-            - build
-          filters:
-            branches:
-              only: nikita
+machine:
+  java:
+    version: openjdk7
