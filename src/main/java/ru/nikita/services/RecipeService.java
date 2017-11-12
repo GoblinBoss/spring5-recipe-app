@@ -1,5 +1,6 @@
 package ru.nikita.services;
 
+import ru.nikita.commands.RecipeCommand;
 import ru.nikita.domain.Recipe;
 
 import java.util.Set;
@@ -13,4 +14,5 @@ public interface RecipeService {
 
     Recipe findById(Long id);
 
+    RecipeCommand saveRecipeCommand(RecipeCommand testRecipeCommand);
 }

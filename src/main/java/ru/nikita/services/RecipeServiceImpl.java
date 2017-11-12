@@ -1,6 +1,9 @@
 package ru.nikita.services;
 
 import lombok.extern.slf4j.Slf4j;
+import ru.nikita.commands.RecipeCommand;
+import ru.nikita.converters.RecipeCommandToRecipe;
+import ru.nikita.converters.RecipeToRecipeCommand;
 import ru.nikita.domain.Recipe;
 import ru.nikita.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
@@ -16,9 +19,13 @@ import java.util.Set;
 @Service
 public class RecipeServiceImpl implements RecipeService {
 
+    private final RecipeToRecipeCommand recipeToRecipeCommand;
+    private final RecipeCommandToRecipe recipeCommandToRecipe;
     private final RecipeRepository recipeRepository;
 
-    public RecipeServiceImpl(RecipeRepository recipeRepository) {
+    public RecipeServiceImpl(RecipeToRecipeCommand recipeToRecipeCommand, RecipeCommandToRecipe recipeCommandToRecipe, RecipeRepository recipeRepository) {
+        this.recipeToRecipeCommand = recipeToRecipeCommand;
+        this.recipeCommandToRecipe = recipeCommandToRecipe;
         this.recipeRepository = recipeRepository;
     }
 
@@ -36,5 +43,16 @@ public class RecipeServiceImpl implements RecipeService {
             throw new RuntimeException("Recipe not found!");
         }
         return recipeOptional.get();
+    }
+
+    @Override
+    public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
+        if(recipeCommand == null){
+            return null;
+        }
+
+        Recipe recipeNotSave = recipeCommandToRecipe.convert(recipeCommand);
+        Recipe recipeSave = recipeRepository.save(recipeNotSave);
+        return recipeToRecipeCommand.convert(recipeSave);
     }
 }
