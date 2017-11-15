@@ -1,6 +1,7 @@
 package ru.nikita.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import ru.nikita.commands.RecipeCommand;
 import ru.nikita.converters.RecipeCommandToRecipe;
 import ru.nikita.converters.RecipeToRecipeCommand;
@@ -8,6 +9,7 @@ import ru.nikita.domain.Recipe;
 import ru.nikita.repositories.RecipeRepository;
 import org.springframework.stereotype.Service;
 
+import java.beans.Transient;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
@@ -46,6 +48,14 @@ public class RecipeServiceImpl implements RecipeService {
     }
 
     @Override
+    @Transactional
+    public RecipeCommand findRecipeCommandById(Long id) {
+        return recipeToRecipeCommand.convert(findById(id));
+    }
+
+
+    @Transactional
+    @Override
     public RecipeCommand saveRecipeCommand(RecipeCommand recipeCommand) {
         if(recipeCommand == null){
             return null;
@@ -54,5 +64,10 @@ public class RecipeServiceImpl implements RecipeService {
         Recipe recipeNotSave = recipeCommandToRecipe.convert(recipeCommand);
         Recipe recipeSave = recipeRepository.save(recipeNotSave);
         return recipeToRecipeCommand.convert(recipeSave);
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        recipeRepository.delete(findById(id));
     }
 }
